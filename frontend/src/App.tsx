@@ -1,4 +1,4 @@
-﻿import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import AppLayout from './layouts/AppLayout';
 import CandidatesPage from './pages/CandidatesPage';
 import DashboardPage from './pages/DashboardPage';
@@ -8,11 +8,16 @@ import ReportsPage from './pages/ReportsPage';
 import SettingsPage from './pages/SettingsPage';
 import UploadPage from './pages/UploadPage';
 
+function RequireAuth() {
+  const token = localStorage.getItem('access_token');
+  return token ? <AppLayout /> : <Navigate to="/login" replace />;
+}
+
 export default function App() {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
-      <Route path="/" element={<AppLayout />}>
+      <Route path="/" element={<RequireAuth />}>
         <Route index element={<DashboardPage />} />
         <Route path="candidates" element={<CandidatesPage />} />
         <Route path="jobs" element={<JobsPage />} />

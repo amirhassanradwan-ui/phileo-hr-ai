@@ -1,13 +1,18 @@
-﻿import LockIcon from '@mui/icons-material/Lock';
+import LockIcon from '@mui/icons-material/Lock';
 import { Box, Button, Paper, Stack, TextField, Typography } from '@mui/material';
 import { FormEvent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const token = localStorage.getItem('access_token');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+  if (token) {
+    return <Navigate to="/" replace />;
+  }
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
