@@ -1,0 +1,16 @@
+﻿services:
+  postgres:
+    image: postgres:16
+    container_name: phileo_hr_postgres
+    environment:
+      POSTGRES_DB: phileo_hr
+      POSTGRES_USER: phileo
+      POSTGRES_PASSWORD: phileo
+    ports:
+      - "5432:5432"
+    volumes:
+      - phileo_postgres_data:/var/lib/postgresql/data
+      - ../database/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+
+volumes:
+  phileo_postgres_data:
