@@ -38,6 +38,23 @@ DATE_PATTERN = re.compile(
     r"^(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|SEPT|OCT|NOV|DEC|\d{4})\b",
     re.IGNORECASE,
 )
+DATE_WORDS = {
+    "PRESENT",
+    "CURRENT",
+    "JAN",
+    "FEB",
+    "MAR",
+    "APR",
+    "MAY",
+    "JUN",
+    "JUL",
+    "AUG",
+    "SEP",
+    "SEPT",
+    "OCT",
+    "NOV",
+    "DEC",
+}
 
 
 def clean_company(value: str) -> str:
@@ -138,6 +155,25 @@ def extract_current_company(lines: list[str]) -> str | None:
     return None
 
 
+def extract_current_position(lines: list[str]) -> str | None:
+    for index, line in enumerate(lines):
+        if DATE_PATTERN.match(line):
+            title_parts: list[str] = []
+            for nearby_line in lines[index + 1 : index + 8]:
+                if "|" in nearby_line:
+                    if title_parts:
+                        return " ".join(title_parts).title()
+                    return None
+                if (
+                    nearby_line.upper() not in SECTION_WORDS
+                    and nearby_line.upper() not in DATE_WORDS
+                    and not DATE_PATTERN.match(nearby_line)
+                    and len(nearby_line) > 3
+                ):
+                    title_parts.append(nearby_line)
+    return None
+
+
 def extract_candidate_fields(text: str) -> dict:
     normalized_text = normalize_cv_text(text)
     email_match = EMAIL_PATTERN.search(normalized_text)
@@ -150,5 +186,6 @@ def extract_candidate_fields(text: str) -> dict:
         "phone": phone_match.group(0) if phone_match else None,
         "city": extract_city(normalized_text),
         "current_company": extract_current_company(lines),
+        "current_position": extract_current_position(lines),
         "extracted_text": normalized_text,
     }
