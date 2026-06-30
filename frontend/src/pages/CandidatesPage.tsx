@@ -30,7 +30,7 @@ const columns: GridColDef[] = [
   { field: 'phone', headerName: 'Phone', flex: 1 },
   { field: 'email', headerName: 'Email', flex: 1 },
   { field: 'city', headerName: 'City', width: 140 },
-  { field: 'current_company', headerName: 'Company', flex: 1 },
+  { field: 'current_company', headerName: 'Last Company', flex: 1 },
   { field: 'current_position', headerName: 'Position', flex: 1 },
   { field: 'status', headerName: 'Status', width: 130 },
 ];
