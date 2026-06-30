@@ -34,6 +34,7 @@ CITY_PATTERN = re.compile(
 )
 EMAIL_PATTERN = re.compile(r"[\w.+-]+@[\w-]+\.[\w.-]+")
 PHONE_PATTERN = re.compile(r"(?:\+?20|0)?1[0125]\d{8}\b")
+YEAR_PATTERN = re.compile(r"\b(19[7-9]\d|20[0-3]\d)\b")
 DATE_PATTERN = re.compile(
     r"^(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|SEPT|OCT|NOV|DEC|\d{4})\b",
     re.IGNORECASE,
@@ -174,6 +175,19 @@ def extract_current_position(lines: list[str]) -> str | None:
     return None
 
 
+def extract_graduation_year(lines: list[str]) -> int | None:
+    education_index = next(
+        (index for index, line in enumerate(lines) if line.upper() == "EDUCATION"),
+        None,
+    )
+    search_lines = lines[education_index + 1 : education_index + 14] if education_index is not None else lines
+    years = [int(match.group(1)) for line in search_lines for match in YEAR_PATTERN.finditer(line)]
+    valid_years = [year for year in years if year <= 2030]
+    if not valid_years:
+        return None
+    return max(valid_years)
+
+
 def extract_candidate_fields(text: str) -> dict:
     normalized_text = normalize_cv_text(text)
     email_match = EMAIL_PATTERN.search(normalized_text)
@@ -185,6 +199,7 @@ def extract_candidate_fields(text: str) -> dict:
         "email": email_match.group(0).lower() if email_match else None,
         "phone": phone_match.group(0) if phone_match else None,
         "city": extract_city(normalized_text),
+        "graduation_year": extract_graduation_year(lines),
         "current_company": extract_current_company(lines),
         "current_position": extract_current_position(lines),
         "extracted_text": normalized_text,

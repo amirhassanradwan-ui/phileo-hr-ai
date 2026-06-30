@@ -20,6 +20,7 @@ type Candidate = {
   phone?: string;
   email?: string;
   city?: string;
+  graduation_year?: number;
   current_company?: string;
   current_position?: string;
   status: string;
@@ -30,6 +31,7 @@ const columns: GridColDef[] = [
   { field: 'phone', headerName: 'Phone', flex: 1 },
   { field: 'email', headerName: 'Email', flex: 1 },
   { field: 'city', headerName: 'City', width: 140 },
+  { field: 'graduation_year', headerName: 'Graduation Year', width: 150 },
   { field: 'current_company', headerName: 'Last Company', flex: 1 },
   { field: 'current_position', headerName: 'Last Position', flex: 1 },
   { field: 'status', headerName: 'Status', width: 130 },
