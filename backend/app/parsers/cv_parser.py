@@ -27,6 +27,17 @@ TITLE_MARKERS = (
     "SPECIALIST",
     "SUPERVISOR",
 )
+EGYPT_CITIES = (
+    "Cairo",
+    "Alexandria",
+    "Giza",
+    "Mansoura",
+    "Menoufia",
+    "Shebin Elkoom",
+    "Sadat City",
+    "Quesna",
+    "Domiat",
+)
 
 CITY_PATTERN = re.compile(
     r"\b([A-Z][A-Za-z]+(?:[ \t]+[A-Z][A-Za-z]+)?)\s*,\s*(Egypt|EG)\b",
@@ -62,6 +73,27 @@ def clean_company(value: str) -> str:
     company = value.split("|", 1)[0].strip()
     company = re.sub(r"\s+", " ", company)
     return company
+
+
+def clean_job_line(value: str) -> str:
+    line = re.sub(r"^[^\w+]+", "", value).strip()
+    return re.sub(r"\s+", " ", line)
+
+
+def split_title_company(line: str) -> tuple[str | None, str | None]:
+    cleaned = clean_job_line(line)
+    if "," not in cleaned:
+        return None, None
+
+    parts = [part.strip() for part in cleaned.split(",") if part.strip()]
+    if len(parts) < 2:
+        return None, None
+
+    title = parts[0]
+    company = parts[1]
+    if not any(marker in title.upper() for marker in TITLE_MARKERS):
+        return None, None
+    return title.title(), company
 
 
 def is_name_line(line: str) -> bool:
@@ -117,6 +149,8 @@ def extract_name(lines: list[str]) -> str:
             parts = [first]
             if len(lines) > 1:
                 second = lines[1].strip()
+                if any(second.upper().startswith(marker) for marker in TITLE_MARKERS):
+                    return first.title()
                 for marker in TITLE_MARKERS:
                     marker_index = second.upper().find(marker)
                     if marker_index > 1:
@@ -133,9 +167,18 @@ def extract_name(lines: list[str]) -> str:
 
 def extract_city(text: str) -> str | None:
     match = CITY_PATTERN.search(text)
-    if not match:
-        return None
-    return match.group(1).strip().title()
+    if match:
+        return match.group(1).strip().title()
+
+    top_lines = "\n".join(text.splitlines()[:6])
+    for city in EGYPT_CITIES:
+        if re.search(rf"\b{re.escape(city)}\b", top_lines, re.IGNORECASE):
+            return city.title()
+
+    for city in EGYPT_CITIES:
+        if re.search(rf"\b{re.escape(city)}\b", text, re.IGNORECASE):
+            return city.title()
+    return None
 
 
 def extract_current_company(lines: list[str]) -> str | None:
@@ -152,6 +195,9 @@ def extract_current_company(lines: list[str]) -> str | None:
                     company = clean_company(nearby_line)
                     if company:
                         return company
+                _, company = split_title_company(nearby_line)
+                if company:
+                    return company
 
     return None
 
@@ -161,6 +207,9 @@ def extract_current_position(lines: list[str]) -> str | None:
         if DATE_PATTERN.match(line):
             title_parts: list[str] = []
             for nearby_line in lines[index + 1 : index + 8]:
+                title, _ = split_title_company(nearby_line)
+                if title:
+                    return title
                 if "|" in nearby_line:
                     if title_parts:
                         return " ".join(title_parts).title()
