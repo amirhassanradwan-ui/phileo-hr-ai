@@ -1,5 +1,5 @@
 import LockIcon from '@mui/icons-material/Lock';
-import { Box, Button, Paper, Stack, TextField, Typography } from '@mui/material';
+import { Alert, Box, Button, Paper, Stack, TextField, Typography } from '@mui/material';
 import { FormEvent, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
@@ -9,6 +9,7 @@ export default function LoginPage() {
   const token = localStorage.getItem('access_token');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
   if (token) {
     return <Navigate to="/" replace />;
@@ -16,9 +17,14 @@ export default function LoginPage() {
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
-    const response = await api.post('/auth/login', { username, password });
-    localStorage.setItem('access_token', response.data.access_token);
-    navigate('/');
+    setError(null);
+    try {
+      const response = await api.post('/auth/login', { username, password });
+      localStorage.setItem('access_token', response.data.access_token);
+      navigate('/');
+    } catch {
+      setError('Login failed. Check your username and password.');
+    }
   }
 
   return (
@@ -29,6 +35,7 @@ export default function LoginPage() {
             <LockIcon color="primary" />
             <Typography variant="h5">Login</Typography>
           </Stack>
+          {error && <Alert severity="error">{error}</Alert>}
           <TextField label="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
           <TextField label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
           <Button type="submit" variant="contained" size="large">
