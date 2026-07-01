@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import AppLayout from './layouts/AppLayout';
+import ApplicationsPage from './pages/ApplicationsPage';
 import CandidatesPage from './pages/CandidatesPage';
 import DashboardPage from './pages/DashboardPage';
 import JobsPage from './pages/JobsPage';
@@ -19,6 +20,7 @@ export default function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/" element={<RequireAuth />}>
         <Route index element={<DashboardPage />} />
+        <Route path="applications" element={<ApplicationsPage />} />
         <Route path="candidates" element={<CandidatesPage />} />
         <Route path="jobs" element={<JobsPage />} />
         <Route path="upload" element={<UploadPage />} />

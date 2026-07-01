@@ -1,4 +1,5 @@
 ﻿import DashboardIcon from '@mui/icons-material/Dashboard';
+import AssignmentIcon from '@mui/icons-material/Assignment';
 import DescriptionIcon from '@mui/icons-material/Description';
 import GroupsIcon from '@mui/icons-material/Groups';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -23,6 +24,7 @@ const navItems = [
   { label: 'Dashboard', path: '/', icon: <DashboardIcon /> },
   { label: 'Candidates', path: '/candidates', icon: <GroupsIcon /> },
   { label: 'Jobs', path: '/jobs', icon: <WorkIcon /> },
+  { label: 'Applications', path: '/applications', icon: <AssignmentIcon /> },
   { label: 'Upload CV', path: '/upload', icon: <UploadFileIcon /> },
   { label: 'Reports', path: '/reports', icon: <DescriptionIcon /> },
   { label: 'Settings', path: '/settings', icon: <SettingsIcon /> },
