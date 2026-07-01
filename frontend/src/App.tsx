@@ -3,6 +3,7 @@ import AppLayout from './layouts/AppLayout';
 import ApplicationsPage from './pages/ApplicationsPage';
 import CandidatesPage from './pages/CandidatesPage';
 import DashboardPage from './pages/DashboardPage';
+import EmailSyncPage from './pages/EmailSyncPage';
 import JobsPage from './pages/JobsPage';
 import LoginPage from './pages/LoginPage';
 import PipelinePage from './pages/PipelinePage';
@@ -23,6 +24,7 @@ export default function App() {
         <Route index element={<DashboardPage />} />
         <Route path="applications" element={<ApplicationsPage />} />
         <Route path="candidates" element={<CandidatesPage />} />
+        <Route path="email-sync" element={<EmailSyncPage />} />
         <Route path="jobs" element={<JobsPage />} />
         <Route path="pipeline" element={<PipelinePage />} />
         <Route path="upload" element={<UploadPage />} />

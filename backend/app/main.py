@@ -1,7 +1,7 @@
 ﻿from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import applications, auth, candidates, jobs, uploads
+from app.api import applications, auth, candidates, email_sync, jobs, uploads
 from app.core.config import settings
 from app.database.session import Base, engine
 from app import models  # noqa: F401
@@ -21,6 +21,7 @@ app.add_middleware(
 app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
 app.include_router(applications.router, prefix="/api/applications", tags=["applications"])
 app.include_router(candidates.router, prefix="/api/candidates", tags=["candidates"])
+app.include_router(email_sync.router, prefix="/api/email-sync", tags=["email-sync"])
 app.include_router(jobs.router, prefix="/api/jobs", tags=["jobs"])
 app.include_router(uploads.router, prefix="/api/uploads", tags=["uploads"])
 
