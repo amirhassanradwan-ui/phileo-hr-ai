@@ -25,6 +25,10 @@ class CandidateCreate(CandidateBase):
     extracted_text: str | None = None
 
 
+class CandidateStatusUpdate(BaseModel):
+    status: str
+
+
 class CandidateRead(CandidateBase):
     id: int
     cv_file_path: str | None = None

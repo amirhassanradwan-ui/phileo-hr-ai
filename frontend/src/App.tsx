@@ -5,6 +5,7 @@ import CandidatesPage from './pages/CandidatesPage';
 import DashboardPage from './pages/DashboardPage';
 import JobsPage from './pages/JobsPage';
 import LoginPage from './pages/LoginPage';
+import PipelinePage from './pages/PipelinePage';
 import ReportsPage from './pages/ReportsPage';
 import SettingsPage from './pages/SettingsPage';
 import UploadPage from './pages/UploadPage';
@@ -23,6 +24,7 @@ export default function App() {
         <Route path="applications" element={<ApplicationsPage />} />
         <Route path="candidates" element={<CandidatesPage />} />
         <Route path="jobs" element={<JobsPage />} />
+        <Route path="pipeline" element={<PipelinePage />} />
         <Route path="upload" element={<UploadPage />} />
         <Route path="reports" element={<ReportsPage />} />
         <Route path="settings" element={<SettingsPage />} />

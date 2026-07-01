@@ -27,3 +27,10 @@ def search_candidates(db: Session, query: str | None = None) -> list[Candidate]:
             )
         )
     return list(db.scalars(statement).all())
+
+
+def update_candidate_status(db: Session, candidate: Candidate, status: str) -> Candidate:
+    candidate.status = status
+    db.commit()
+    db.refresh(candidate)
+    return candidate

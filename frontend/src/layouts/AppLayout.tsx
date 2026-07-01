@@ -2,6 +2,7 @@
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import DescriptionIcon from '@mui/icons-material/Description';
 import GroupsIcon from '@mui/icons-material/Groups';
+import ViewKanbanIcon from '@mui/icons-material/ViewKanban';
 import SettingsIcon from '@mui/icons-material/Settings';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import WorkIcon from '@mui/icons-material/Work';
@@ -25,6 +26,7 @@ const navItems = [
   { label: 'Candidates', path: '/candidates', icon: <GroupsIcon /> },
   { label: 'Jobs', path: '/jobs', icon: <WorkIcon /> },
   { label: 'Applications', path: '/applications', icon: <AssignmentIcon /> },
+  { label: 'Pipeline', path: '/pipeline', icon: <ViewKanbanIcon /> },
   { label: 'Upload CV', path: '/upload', icon: <UploadFileIcon /> },
   { label: 'Reports', path: '/reports', icon: <DescriptionIcon /> },
   { label: 'Settings', path: '/settings', icon: <SettingsIcon /> },
