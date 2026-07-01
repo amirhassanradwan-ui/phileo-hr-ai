@@ -9,3 +9,10 @@ class Token(BaseModel):
 class LoginRequest(BaseModel):
     username: str
     password: str
+
+
+class CurrentUser(BaseModel):
+    username: str
+    full_name: str
+    role: str
+    email: str
